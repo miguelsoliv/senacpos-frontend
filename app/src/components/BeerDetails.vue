@@ -1,39 +1,57 @@
 <template>
-  <div>
-    <v-container grid-list-md>
-      <v-layout row wrap>
-        <!-- Laço com os dados de cervejas -->
-        <!-- Notem que usamos a id devido ao object observer -->
-        <v-flex v-for="beer in beers" :key="beer.id" xs4>
-          <!-- Passamos a prop com a nossa cerveja específica para ser renderizada no card. -->
-          <BeerCard :beer="beer" />
+<div>
+  <v-flex v-for="beer in beers" :key="beer.id">
+    <v-container fluid>
+      <v-layout>
+        <v-flex>
+          <v-card class="elevation-12">
+            <v-toolbar dark color="primary">
+              <v-toolbar-title>{{ beer.name }}</v-toolbar-title>
+              <v-spacer/>
+            </v-toolbar>
+            <v-card-text>
+              <v-card-title primary-title>
+                <div>
+                  <v-img :src="beer.image_url" height="200px" contain/>
+                  <div><span class="headline">Tagline: </span>{{ beer.tagline }}</div>
+                  <div><span class="headline">First Brewed: </span>{{ beer.first_brewed }}</div>
+                  <div><span class="headline">Description: </span>{{ beer.description }}</div>
+                </div>
+              </v-card-title>
+            </v-card-text>
+            <v-card-actions>
+              <v-spacer/>
+              <v-btn color="light-green" v-on:click="addToCart(beer)">Add to cart</v-btn>
+              <v-btn color="primary" @click.native="$router.go(-1)">Back</v-btn>
+            </v-card-actions>
+          </v-card>
         </v-flex>
       </v-layout>
     </v-container>
-  </div>
+  </v-flex>
+</div>
 </template>
 
 <script>
 import axios from "axios";
-// Como padrão, importamos nosso componente de card.
-import BeerCard from "../components/BeerCard.vue";
+import store from "@/store/cart.js";
 
 export default {
   mounted() {
     axios
-        //.get("https://api.punkapi.com/v2/beers?beer_name=")
-      .get("https://api.punkapi.com/v2/beers?brewed_before=11-2012&abv_gt=6")
+      .get("https://api.punkapi.com/v2/beers?beer_name=" + this.$route.params.beer_name)
       .then(response => (this.beers = response.data));
   },
   data() {
     return {
-      // Criamos um dado para fazer o storage das nossas cervejas
       beers: []
     };
   },
-  components: {
-    // Como padrão, registramos o componente
-    BeerCard
+  methods: {
+    addToCart(beer) {
+      store.commit("addToCart", beer);
+      store.commit("incrementBeer", beer);
+    }
   }
 };
 </script>

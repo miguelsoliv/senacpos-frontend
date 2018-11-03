@@ -12,7 +12,7 @@ export default new Router({
       component: Home
     },
     {
-      path: '/details',
+      path: '/details/:beer_name',
       name: 'details',
       component: () =>
         import('./views/Details.vue')

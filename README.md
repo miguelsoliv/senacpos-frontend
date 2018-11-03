@@ -1,6 +1,6 @@
 # Beer Company
 
-# Tecnologias utilizadas
+## Tecnologias utilizadas
 - [Node.js](https://nodejs.org/en/)
 - [Vue.js](https://vuejs.org/)
 - [Vuetify](https://vuetifyjs.com/en/)
