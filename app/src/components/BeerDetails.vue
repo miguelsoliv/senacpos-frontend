@@ -13,6 +13,7 @@
               <v-card-title primary-title>
                 <div>
                   <v-img :src="beer.image_url" height="200px" contain/>
+                  <div><span class="headline">Alcohol By Volume: </span>{{ beer.abv }}</div>
                   <div><span class="headline">Tagline: </span>{{ beer.tagline }}</div>
                   <div><span class="headline">First Brewed: </span>{{ beer.first_brewed }}</div>
                   <div><span class="headline">Description: </span>{{ beer.description }}</div>

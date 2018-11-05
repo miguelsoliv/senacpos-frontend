@@ -16,6 +16,7 @@
       <div>
         <h3 class="headline mb-0">{{ beer.name }}</h3>
         <div>{{ beer.tagline }}</div>
+        <v-list-tile-action-text>ABV: {{ beer.abv }}</v-list-tile-action-text>
       </div>
     </v-card-title>
 

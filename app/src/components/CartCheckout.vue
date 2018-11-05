@@ -12,7 +12,8 @@
             <v-list-tile :key="beer.id" avatar ripple>
               <v-list-tile-content>
                 <v-list-tile-title>{{ beer.name }}</v-list-tile-title>
-                <v-list-tile-sub-title>Quantity: {{ beer.quantity }}</v-list-tile-sub-title>
+                <v-list-tile-sub-title>Price: {{ formatTotal(beer.price) }}</v-list-tile-sub-title>
+                <v-list-tile-action-text>Quantity: {{ beer.quantity }}</v-list-tile-action-text>
               </v-list-tile-content>
 
               <v-list-tile-action>
