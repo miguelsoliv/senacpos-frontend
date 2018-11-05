@@ -21,9 +21,19 @@
             </v-card-text>
             <v-card-actions>
               <v-spacer/>
-              <v-btn color="light-green" v-on:click="addToCart(beer)">Add to cart</v-btn>
+              <v-btn color="light-green" @click="snackbar = true" v-on:click="addToCart(beer)">Add to cart</v-btn>
               <v-btn color="primary" @click.native="$router.go(-1)">Back</v-btn>
             </v-card-actions>
+
+            <v-snackbar v-model="snackbar" :timeout=1250>
+              Beer added to cart
+              <v-btn
+                color="pink"
+                flat
+                @click="snackbar = false">
+                Close
+              </v-btn>
+            </v-snackbar>
           </v-card>
         </v-flex>
       </v-layout>
@@ -44,7 +54,8 @@ export default {
   },
   data() {
     return {
-      beers: []
+      beers: [],
+      snackbar: false
     };
   },
   methods: {

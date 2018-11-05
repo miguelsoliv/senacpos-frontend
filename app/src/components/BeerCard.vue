@@ -20,9 +20,19 @@
     </v-card-title>
 
     <v-card-actions>
-      <v-btn flat color="blue" v-on:click="addToCart(beer)">Add to cart</v-btn>
+      <v-btn flat color="blue" @click="snackbar = true" v-on:click="addToCart(beer)">Add to cart</v-btn>
       <v-btn flat color="orange" @click.native="$router.push('/details/' + beer.name)">Details</v-btn>
     </v-card-actions>
+
+    <v-snackbar v-model="snackbar" :timeout=1250>
+      Beer added to cart
+      <v-btn
+        color="pink"
+        flat
+        @click="snackbar = false">
+        Close
+      </v-btn>
+    </v-snackbar>
   </v-card>
 </v-hover>
 </template>
@@ -34,7 +44,9 @@ export default {
   //Recebendo a prop beer
   props: ["beer"],
   data() {
-    return {};
+    return {
+       snackbar: false
+    };
   },
   methods: {
     addToCart(beer) {

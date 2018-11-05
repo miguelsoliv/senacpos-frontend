@@ -2,7 +2,10 @@
   <v-app>
 
     <v-toolbar app :clipped-left="clipped">
-      <v-toolbar-title v-text="title"></v-toolbar-title>
+      <v-toolbar-title :style="{ cursor: 'pointer'}"
+        v-text="title"
+        v-on:click="$router.push('/')">
+      </v-toolbar-title>
       <v-spacer></v-spacer>
       <v-btn icon @click.stop="rightDrawer = !rightDrawer">
         <v-icon>menu</v-icon>

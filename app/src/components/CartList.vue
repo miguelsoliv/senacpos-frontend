@@ -2,7 +2,7 @@
 <v-list two-line subheader>
   <v-subheader inset>Shopping Cart</v-subheader>
 
-  <v-list-tile v-if="this.qty == 0">
+  <v-list-tile v-if="this.beersTotal == 0">
     <v-list-tile-avatar icon color="grey">
       <v-icon dark>shopping_cart</v-icon>
     </v-list-tile-avatar>
@@ -71,15 +71,19 @@
 
   <v-divider inset></v-divider>
 
-  <v-list-tile v-if="this.qty > 0">
+  <v-list-tile v-if="this.beersTotal > 0">
     <v-list-tile-content>
-      <v-list-tile-title>Cart Value: {{ formatTotal(qty) }}</v-list-tile-title>
+      <v-list-tile-title>Items in Cart: {{ beersQuantity }}</v-list-tile-title>
+      <v-list-tile-title>
+        Cart Value: {{ formatTotal(beersTotal) }}
+        <span v-if="beersQuantity >= 10" class="red--text">(10% Off)</span>
+      </v-list-tile-title>
     </v-list-tile-content>
   </v-list-tile>
 
-  <center v-if="this.qty > 0">
-    <v-btn color="light-green" @click.native="$router.push('/cart-end')">
-      End Shopping
+  <center v-if="this.beersTotal > 0">
+    <v-btn color="light-green" @click.native="$router.push('/checkout')">
+      Go to checkout
     </v-btn>
   </center>
 
@@ -99,8 +103,15 @@ export default {
     beers() {
       return store.state.beers;
     },
-    qty() {
-      return store.state.qty;
+    beersTotal() {
+      if(store.state.beersQuantity >= 10) {
+        return (store.state.beersTotal) - store.state.beersTotal * 0.1;
+      } else {
+        return store.state.beersTotal;
+      }
+    },
+    beersQuantity() {
+      return store.state.beersQuantity;
     }
   },
   methods: {

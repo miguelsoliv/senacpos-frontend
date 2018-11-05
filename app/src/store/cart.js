@@ -9,7 +9,8 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     beers: [],
-    qty: 0
+    beersTotal: 0,
+    beersQuantity: 0
   },
   mutations: {
     addToCart(state, beer) {
@@ -27,14 +28,16 @@ export default new Vuex.Store({
     },
     incrementBeer(state, beer) {
       let index = findIndex(state.beers, (o) => o.id == beer.id);
-      state.qty += state.beers[index].price;
+      state.beersTotal += state.beers[index].price;
       state.beers[index].quantity++;
+      state.beersQuantity++;
     },
     decrementBeer(state, beer) {
       let index = findIndex(state.beers, (o) => o.id == beer.id);
-      state.qty -= state.beers[index].price;
+      state.beersTotal -= state.beers[index].price;
 
       state.beers[index].quantity--;
+      state.beersQuantity--;
 
       if (state.beers[index].quantity == 0) {
         state.beers.splice(state.beers.indexOf(beer), 1);
@@ -43,7 +46,8 @@ export default new Vuex.Store({
     deleteBeer(state, beer) {
       let index = findIndex(state.beers, (o) => o.id == beer.id);
 
-      state.qty -= state.beers[index].price * state.beers[index].quantity;
+      state.beersTotal -= state.beers[index].price * state.beers[index].quantity;
+      state.beersQuantity -= state.beers[index].quantity;
 
       state.beers.splice(state.beers.indexOf(beer), 1);
     }
