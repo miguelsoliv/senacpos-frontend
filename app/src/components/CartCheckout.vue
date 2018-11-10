@@ -18,16 +18,26 @@
 
               <v-list-tile-action>
                 <div>
-                  <v-btn flat icon color="indigo" v-on:click="incrementBeer(beer)">
+                  <v-btn
+                    flat
+                    icon
+                    color="indigo"
+                    @click="incrementBeer(beer)">
                     <v-icon dark>add</v-icon>
                   </v-btn>
 
                   <v-btn v-if="beer.quantity > 1" 
-                    flat icon color="red lighten-3" v-on:click="decrementBeer(beer)">
+                    flat
+                    icon
+                    color="red lighten-3"
+                    @click="decrementBeer(beer)">
                     <v-icon dark>remove</v-icon>
                   </v-btn>
                   <v-btn v-else 
-                    flat icon color="red" @click="dialog = true">
+                    flat
+                    icon
+                    color="red"
+                    @click="dialog = true">
                     <v-icon dark>remove</v-icon>
                   </v-btn>
 
@@ -47,10 +57,18 @@
 
                       <v-card-actions>
                         <v-spacer></v-spacer>
-                        <v-btn color="green darken-1" flat="flat" @click="dialog = false">
+                        <v-btn
+                          color="green darken-1"
+                          flat="flat"
+                          @click="dialog = false"
+                        >
                           No
                         </v-btn>
-                        <v-btn color="green darken-1" flat="flat" @click="dialog = false" v-on:click="deleteBeer(beer)">
+                        <v-btn
+                          color="green darken-1"
+                          flat="flat"
+                          @click="deleteBeer(beer), dialog = false"
+                        >
                           Yes
                         </v-btn>
                       </v-card-actions>
@@ -78,7 +96,7 @@
                     {{ formatTotal(beersTotal) }}
                   </span>
                   <span class="red--text">
-                    {{ formatTotal((beersTotal) - beersTotal * 0.1) }} (10% Off)
+                    {{ formatTotal(totalWithDiscount) }} (10% Off)
                   </span>
               </v-list-tile-sub-title>
             </v-list-tile-action>
@@ -113,6 +131,9 @@ export default {
     },
     beersQuantity() {
         return store.state.beersQuantity;
+    },
+    totalWithDiscount() {
+      return this.beersTotal - (this.beersTotal * 0.1);
     }
   },
   methods: {
@@ -139,7 +160,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .original_price {
     text-decoration: line-through;
 }

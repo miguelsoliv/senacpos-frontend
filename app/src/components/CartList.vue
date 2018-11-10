@@ -16,7 +16,9 @@
     :key="beer.id"
     avatar>
 
-    <v-list-tile-avatar>
+    <v-list-tile-avatar
+      :style="{ cursor: 'pointer'}"
+      @click="$router.push('/details/' + beer.name);">
       <img :src="beer.image_url">
     </v-list-tile-avatar>
     <v-list-tile-content>
@@ -26,16 +28,26 @@
 
     <v-list-tile-action>
       <div>
-        <v-btn flat icon color="indigo" v-on:click="incrementBeer(beer)">
+        <v-btn
+          flat
+          icon
+          color="indigo"
+          @click="incrementBeer(beer)">
           <v-icon dark>add</v-icon>
         </v-btn>
 
         <v-btn v-if="beer.quantity > 1" 
-          flat icon color="red lighten-3" v-on:click="decrementBeer(beer)">
+          flat
+          icon
+          color="red lighten-3"
+          @click="decrementBeer(beer)">
           <v-icon dark>remove</v-icon>
         </v-btn>
         <v-btn v-else 
-          flat icon color="red" @click="dialog = true">
+          flat
+          icon
+          color="red"
+          @click="dialog = true">
           <v-icon dark>remove</v-icon>
         </v-btn>
 
@@ -55,16 +67,23 @@
 
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn color="green darken-1" flat="flat" @click="dialog = false">
+              <v-btn
+                color="green darken-1"
+                flat="flat"
+                @click="dialog = false"
+              >
                 No
               </v-btn>
-              <v-btn color="green darken-1" flat="flat" @click="dialog = false" v-on:click="deleteBeer(beer)">
+              <v-btn
+                color="green darken-1"
+                flat="flat"
+                @click="deleteBeer(beer), dialog = false"
+              >
                 Yes
               </v-btn>
             </v-card-actions>
           </v-card>
         </v-dialog>
-    
       </div>
     </v-list-tile-action>
   </v-list-tile>
@@ -76,17 +95,23 @@
       <v-list-tile-title>Items in Cart: {{ beersQuantity }}</v-list-tile-title>
       <v-list-tile-title>
         Cart Value: {{ formatTotal(beersTotal) }}
-        <span v-if="beersQuantity >= 10" class="red--text">(10% Off)</span>
+        <span v-if="beersQuantity >= 10"
+          class="red--text"
+        >
+          (10% Off)
+        </span>
       </v-list-tile-title>
     </v-list-tile-content>
   </v-list-tile>
 
   <center v-if="this.beersTotal > 0">
-    <v-btn color="light-green" @click.native="$router.push('/checkout')">
+    <v-btn
+      color="light-green"
+      @click.native="$router.push('/checkout')"
+    >
       Go to checkout
     </v-btn>
   </center>
-
 </v-list>
 </template>
 
@@ -105,13 +130,16 @@ export default {
     },
     beersTotal() {
       if(store.state.beersQuantity >= 10) {
-        return (store.state.beersTotal) - store.state.beersTotal * 0.1;
+        return this.totalWithDiscount;
       } else {
         return store.state.beersTotal;
       }
     },
     beersQuantity() {
       return store.state.beersQuantity;
+    },
+    totalWithDiscount() {
+      return store.state.beersTotal - (store.state.beersTotal * 0.1);
     }
   },
   methods: {

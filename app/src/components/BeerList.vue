@@ -73,8 +73,8 @@ export default {
         this.beers = this.beersOriginal;
       } else {
         axios
-          .get("https://api.punkapi.com/v2/beers?ibu_gt=" + this.categories[newValue].val1 + "&ibu_lt="
-              + this.categories[newValue].val2)
+          .get("https://api.punkapi.com/v2/beers?ibu_gt=" + this.categories[newValue].val1 +
+            "&ibu_lt=" + this.categories[newValue].val2)
           .then(response => (this.beers = response.data));
       }
     }

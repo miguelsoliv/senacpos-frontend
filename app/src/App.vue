@@ -1,10 +1,9 @@
 <template>
   <v-app>
-
     <v-toolbar app :clipped-left="clipped">
       <v-toolbar-title :style="{ cursor: 'pointer'}"
         v-text="title"
-        v-on:click="$router.push('/')">
+        @click="$router.push('/')">
       </v-toolbar-title>
       <v-spacer></v-spacer>
       <v-btn icon @click.stop="rightDrawer = !rightDrawer">
@@ -13,7 +12,7 @@
     </v-toolbar>
 
     <v-content>
-      <router-view />
+      <router-view :key="$route.fullPath"/>
     </v-content>
 
     <v-navigation-drawer temporary :right="right" v-model="rightDrawer" fixed app>

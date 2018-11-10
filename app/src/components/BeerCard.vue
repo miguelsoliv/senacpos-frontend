@@ -21,8 +21,20 @@
     </v-card-title>
 
     <v-card-actions>
-      <v-btn flat color="blue" @click="snackbar = true" v-on:click="addToCart(beer)">Add to cart</v-btn>
-      <v-btn flat color="orange" @click.native="$router.push('/details/' + beer.name)">Details</v-btn>
+      <v-btn
+        flat
+        color="blue"
+        @click="addToCart(beer), snackbar = true"
+      >
+        Add to cart
+      </v-btn>
+      <v-btn
+        flat
+        color="orange"
+        @click.native="$router.push('/details/' + beer.name)"
+      >
+        Details
+      </v-btn>
     </v-card-actions>
 
     <v-snackbar v-model="snackbar" :timeout=1250>
@@ -30,7 +42,8 @@
       <v-btn
         color="pink"
         flat
-        @click="snackbar = false">
+        @click="snackbar = false"
+      >
         Close
       </v-btn>
     </v-snackbar>
