@@ -1,6 +1,6 @@
 <template>
 <div>
-  <v-flex v-for="beer in beers" :key="beer.id">
+  <v-flex :key="beer.id">
     <v-container fluid>
       <v-layout>
         <v-flex>
@@ -63,26 +63,25 @@
 </template>
 
 <script>
-import axios from "axios";
-import store from "@/store/cart.js";
+import axios from "axios"
+import { mapActions } from "vuex"
 
 export default {
-  mounted() {
+  beforeMount() {
     axios
       .get("https://api.punkapi.com/v2/beers?beer_name=" + this.$route.params.beer_name)
-      .then(response => (this.beers = response.data));
+      .then(response => (this.beer = response.data[0]))
   },
   data() {
     return {
-      beers: [],
+      beer: null,
       snackbar: false
-    };
+    }
   },
   methods: {
-    addToCart(beer) {
-      store.commit("addToCart", beer);
-      store.commit("incrementBeer", beer);
-    }
+    ...mapActions ({
+      addToCart: 'addToCart'
+    })
   }
-};
+}
 </script>

@@ -8,7 +8,7 @@
         </v-toolbar>
 
         <v-list two-line>
-          <template v-for="beer in beers">
+          <template v-for="beer in shoppingCart">
             <v-list-tile :key="beer.id" avatar ripple>
               <v-list-tile-content>
                 <v-list-tile-title>{{ beer.name }}</v-list-tile-title>
@@ -22,7 +22,7 @@
                     flat
                     icon
                     color="indigo"
-                    @click="incrementBeer(beer)">
+                    @click="addToCart(beer)">
                     <v-icon dark>add</v-icon>
                   </v-btn>
 
@@ -96,7 +96,7 @@
                     {{ formatTotal(beersTotal) }}
                   </span>
                   <span class="red--text">
-                    {{ formatTotal(totalWithDiscount) }} (10% Off)
+                    {{ formatTotal(checkHasDiscount) }} (10% Off)
                   </span>
               </v-list-tile-sub-title>
             </v-list-tile-action>
@@ -114,7 +114,7 @@
 </template>
 
 <script>
-import store from "@/store/cart.js";
+import { mapState, mapGetters, mapActions } from "vuex"
 
 export default {
   data() {
@@ -123,29 +123,21 @@ export default {
     }
   },
   computed: {
-    beers() {
-      return store.state.beers;
-    },
-    beersTotal() {
-      return store.state.beersTotal;
-    },
-    beersQuantity() {
-        return store.state.beersQuantity;
-    },
-    totalWithDiscount() {
-      return this.beersTotal - (this.beersTotal * 0.1);
-    }
+    ...mapState ({
+      shoppingCart: state => state.shoppingCart,
+      beersTotal: state => state.beersTotal,
+      beersQuantity: state => state.beersQuantity
+    }),
+    ...mapGetters ([
+      'checkHasDiscount'
+    ])
   },
   methods: {
-    incrementBeer(beer) {
-      store.commit("incrementBeer", beer);
-    },
-    decrementBeer(beer) {
-      store.commit("decrementBeer", beer);
-    },
-    deleteBeer(beer) {
-      store.commit("deleteBeer", beer);
-    },
+    ...mapActions ({
+      addToCart: 'addToCart',
+      decrementBeer: 'decrementBeer',
+      deleteBeer: 'deleteBeer'
+    }),
     formatTotal(value) {
       //var formatter = new Intl.NumberFormat("pt-BR", {
       var formatter = new Intl.NumberFormat("en-US", {
@@ -153,15 +145,15 @@ export default {
         currency: "USD",
         //currency: "BRL",
         minimumFractionDigits: 2
-      });
-      return formatter.format(value);
+      })
+      return formatter.format(value)
     }
   }
-};
+}
 </script>
 
 <style scoped>
 .original_price {
-    text-decoration: line-through;
+    text-decoration: line-through
 }
 </style>

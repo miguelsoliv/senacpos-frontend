@@ -52,7 +52,7 @@
 </template>
 
 <script>
-import store from "@/store/cart.js";
+import { mapActions } from "vuex"
 
 export default {
   //Recebendo a prop beer
@@ -60,13 +60,12 @@ export default {
   data() {
     return {
        snackbar: false
-    };
+    }
   },
   methods: {
-    addToCart(beer) {
-      store.commit("addToCart", beer);
-      store.commit("incrementBeer", beer);
-    }
+    ...mapActions ({
+      addToCart: 'addToCart'
+    })
   }
-};
+}
 </script>

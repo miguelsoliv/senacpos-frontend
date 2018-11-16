@@ -2,7 +2,7 @@
 <v-list two-line subheader>
   <v-subheader inset>Shopping Cart</v-subheader>
 
-  <v-list-tile v-if="this.beersTotal == 0">
+  <v-list-tile v-if="this.beersQuantity == 0">
     <v-list-tile-avatar icon color="grey">
       <v-icon dark>shopping_cart</v-icon>
     </v-list-tile-avatar>
@@ -12,10 +12,10 @@
   </v-list-tile>
 
   <v-list-tile
-    v-for="beer in beers"
+    v-for="beer in shoppingCart"
     :key="beer.id"
     avatar>
-
+  
     <v-list-tile-avatar
       :style="{ cursor: 'pointer'}"
       @click="$router.push('/details/' + beer.name);">
@@ -32,7 +32,7 @@
           flat
           icon
           color="indigo"
-          @click="incrementBeer(beer)">
+          @click="addToCart(beer)">
           <v-icon dark>add</v-icon>
         </v-btn>
 
@@ -90,11 +90,10 @@
 
   <v-divider inset></v-divider>
 
-  <v-list-tile v-if="this.beersTotal > 0">
+  <v-list-tile v-if="this.beersQuantity > 0">
     <v-list-tile-content>
       <v-list-tile-title>Items in Cart: {{ beersQuantity }}</v-list-tile-title>
-      <v-list-tile-title>
-        Cart Value: {{ formatTotal(beersTotal) }}
+      <v-list-tile-title>Cart Value: {{ formatTotal(checkHasDiscount) }}
         <span v-if="beersQuantity >= 10"
           class="red--text"
         >
@@ -104,7 +103,7 @@
     </v-list-tile-content>
   </v-list-tile>
 
-  <center v-if="this.beersTotal > 0">
+  <center v-if="this.beersQuantity > 0">
     <v-btn
       color="light-green"
       @click.native="$router.push('/checkout')"
@@ -116,7 +115,7 @@
 </template>
 
 <script>
-import store from "@/store/cart.js";
+import { mapState, mapGetters, mapActions } from "vuex"
 
 export default {
   data () {
@@ -125,33 +124,20 @@ export default {
     }
   },
   computed: {
-    beers() {
-      return store.state.beers;
-    },
-    beersTotal() {
-      if(store.state.beersQuantity >= 10) {
-        return this.totalWithDiscount;
-      } else {
-        return store.state.beersTotal;
-      }
-    },
-    beersQuantity() {
-      return store.state.beersQuantity;
-    },
-    totalWithDiscount() {
-      return store.state.beersTotal - (store.state.beersTotal * 0.1);
-    }
+    ...mapState ({
+      shoppingCart: state => state.shoppingCart,
+      beersQuantity: state => state.beersQuantity
+    }),
+    ...mapGetters ([
+      'checkHasDiscount'
+    ])
   },
   methods: {
-    incrementBeer(beer) {
-      store.commit("incrementBeer", beer);
-    },
-    decrementBeer(beer) {
-      store.commit("decrementBeer", beer);
-    },
-    deleteBeer(beer) {
-      store.commit("deleteBeer", beer);
-    },
+    ...mapActions ({
+      addToCart: 'addToCart',
+      decrementBeer: 'decrementBeer',
+      deleteBeer: 'deleteBeer'
+    }),
     formatTotal(value) {
       //var formatter = new Intl.NumberFormat("pt-BR", {
       var formatter = new Intl.NumberFormat("en-US", {
@@ -159,9 +145,9 @@ export default {
         currency: "USD",
         //currency: "BRL",
         minimumFractionDigits: 2
-      });
-      return formatter.format(value);
+      })
+      return formatter.format(value)
     }
   }
-};
+}
 </script>

@@ -6,8 +6,11 @@
         @click="$router.push('/')">
       </v-toolbar-title>
       <v-spacer></v-spacer>
-      <v-btn icon @click.stop="rightDrawer = !rightDrawer">
-        <v-icon>menu</v-icon>
+      <v-btn mr-2 icon @click.stop="rightDrawer = !rightDrawer">
+        <v-badge right>
+          <span slot="badge">{{ beersQuantity }}</span>
+          <v-icon>menu</v-icon>
+        </v-badge>
       </v-btn>
     </v-toolbar>
 
@@ -26,10 +29,11 @@
 </template>
 
 <script>
-import CartList from "./components/CartList.vue";
+import CartList from "./components/CartList.vue"
+import { mapState } from "vuex"
 
 export default {
-  name: "App",
+  name: "BeerCompany",
   data() {
     return {
       clipped: false,
@@ -45,10 +49,15 @@ export default {
       right: true,
       rightDrawer: false,
       title: "Beer Company",
-    };
+    }
+  },
+  computed: {
+    ...mapState ({
+      beersQuantity: state => state.beersQuantity
+    })
   },
   components: {
     CartList
   }
-};
+}
 </script>

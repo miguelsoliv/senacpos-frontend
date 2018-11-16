@@ -27,60 +27,63 @@
 </template>
 
 <script>
-import axios from "axios";
-import BeerCard from "../components/BeerCard.vue";
+import BeerCard from "../components/BeerCard.vue"
+import { mapState, mapActions } from "vuex"
 
 export default {
-  mounted() {
-    axios
-      .get("https://api.punkapi.com/v2/beers?brewed_before=11-2012&abv_gt=6")
-      .then(response => (this.beers = response.data, this.beersOriginal = response.data));
+  created() {
+    this.getAllBeers()
   },
   data() {
     return {
-      beersOriginal: [],
-      beers: [],
       selectedValue: null,
       categories: [
-        {
-          id: "0",
-          text: "Show All"
-        },
-        {
-          id: "1",
-          text: "Lambic (0-10)",
-          val1: 0,
-          val2: 10
-        },
-        {
-          id: "2",
-          text: "Wheat beer (8-18)",
-          val1: 8,
-          val2: 18
-        },
-        {
-          id: "3",
-          text: "American lager (8-26)",
-          val1: 8,
-          val2: 26
-        }
-      ]
-    };
+      {
+        id: "0",
+        text: "Show All"
+      },
+      {
+        id: "1",
+        text: "Lambic (0-10)",
+        val1: 0,
+        val2: 10
+      },
+      {
+        id: "2",
+        text: "Wheat beer (8-18)",
+        val1: 8,
+        val2: 18
+      },
+      {
+        id: "3",
+        text: "American lager (8-26)",
+        val1: 8,
+        val2: 26
+      }
+    ]
+    }
+  },
+  computed: {
+    ...mapState ({
+      beers: state => state.beers
+    })
+  },
+  methods: {
+    ...mapActions ({
+      getAllBeers: 'getAllBeers',
+      applyFilter: 'applyFilter'
+    })
   },
   watch: {
     selectedValue(newValue) {
-      if(newValue == "0") {
-        this.beers = this.beersOriginal;
-      } else {
-        axios
-          .get("https://api.punkapi.com/v2/beers?ibu_gt=" + this.categories[newValue].val1 +
-            "&ibu_lt=" + this.categories[newValue].val2)
-          .then(response => (this.beers = response.data));
-      }
+      this.applyFilter({
+        val1: this.categories[newValue].val1,
+        val2: this.categories[newValue].val2
+      })
     }
   },
   components: {
     BeerCard
   }
-};
+}
 </script>
